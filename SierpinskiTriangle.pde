@@ -3,7 +3,8 @@ void setup()
 {
 	size(500,500);
 	background(0,0,0);
-	triangles.add(new Equitri(50,450,400));
+	//base triangle
+	triangles.add(new Equitri(50,423.2,400));
 }
 void draw()
 {
@@ -16,24 +17,38 @@ void draw()
 		triangles.get(i).show();
 	}
 }
+void split(int whereSplit)
+{
+	//variables and first line splits main triangle
+	float newSize=triangles.get(whereSplit).halfSize();
+	float x=triangles.get(whereSplit).getX();
+	float y=triangles.get(whereSplit).getY();
+	//new triangles
+	triangles.add(new Equitri(x+newSize/2,y+newSize,newSize));
+	triangles.add(new Equitri(x+newSize,y,newSize));
+}
 public class Equitri
 {
-	int cornX, cornY, size;
-	public Equitri(int corn1X, int corn1Y, int length)
+	float cornX, cornY, size;
+	public Equitri(float corn1X, float corn1Y, float length)
 	{
-		trishape(corn1X, corn1Y, length);
-	}
-	public void trishape(int corn1X, int corn1Y, int length)
-	{
-		//params are bottom left corner and side length
 		cornX=corn1X;
 		cornY=corn1Y;
 		size=length;
 	}
+	public float halfSize()
+	{
+		//returns half its size after it halves itself
+		size/=2;
+		return size;
+	}
+	public float getX(){return cornX;}
+	public float getY(){return cornY;}
+	public float getSize(){return size;}
 	public void show()
 	{
 		stroke(0,0,0);
 		fill(255,255,255);
-		triangle(cornX,cornY,cornX+size,cornY,cornX+size/2,(float)Math.sqrt(size*size-(size/2)*(size/2)));
+		triangle(cornX,cornY,cornX+size,cornY,cornX+size/2,cornY-(float)(0.5*size*Math.sqrt(3)));
 	}
 }
