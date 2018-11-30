@@ -17,14 +17,15 @@ void draw()
 		triangles.get(i).show();
 	}
 }
-void split(int whereSplit)
+public void split(int whereSplit)
 {
-	//variables and first line splits main triangle
+	//variables and first line splits main triangle into bottom left one
 	float newSize=triangles.get(whereSplit).halfSize();
 	float x=triangles.get(whereSplit).getX();
 	float y=triangles.get(whereSplit).getY();
-	//new triangles
-	triangles.add(new Equitri(x+newSize/2,y+newSize,newSize));
+	//top triangle x0.1275 is to account for the rounding errors
+	triangles.add(new Equitri(x+newSize/2,y-newSize+newSize*0.1275,newSize));
+	//bottom right triangle
 	triangles.add(new Equitri(x+newSize,y,newSize));
 }
 public class Equitri
@@ -50,5 +51,21 @@ public class Equitri
 		stroke(0,0,0);
 		fill(255,255,255);
 		triangle(cornX,cornY,cornX+size,cornY,cornX+size/2,cornY-(float)(0.5*size*Math.sqrt(3)));
+	}
+}
+public void mousePressed()
+{
+	int indexSize=triangles.size();
+	for(int i=0; i<indexSize; i++)
+	{
+		split(i);
+	}
+}
+public void keyPressed()
+{
+	if(key==' ')
+	{
+		triangles.clear();
+		triangles.add(new Equitri(50,423.2,400));
 	}
 }
